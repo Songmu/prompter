@@ -21,7 +21,7 @@ utility for easy prompting
 	twitterID := prompter.Prompt("Enter your twitter ID", "")
 	passwd := prompter.Password("Enter your password")
 	var likeSushi bool = prompter.YN("Do you like sushi?", true)
-	var likeBeer bool = prompter.YN("Do you like beer?", false)
+	var likeBeer bool = prompter.YesNo("Do you like beer?", false)
 
 ## Author
 
