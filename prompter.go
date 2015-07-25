@@ -14,11 +14,14 @@ import (
 
 // Prompter is object for prompting
 type Prompter struct {
-	Message    string
+	Message string
+	// choices of answer
 	Choices    []string
 	IgnoreCase bool
 	Default    string
-	Regexp     *regexp.Regexp
+	// specify answer pattern by regexp. When both Choices and Regexp are specified, Regexp takes a priority.
+	Regexp *regexp.Regexp
+	// for passwords and so on.
 	NoEcho     bool
 	UseDefault bool
 	reg        *regexp.Regexp
