@@ -97,9 +97,6 @@ func (p *Prompter) errorMsg() string {
 }
 
 func (p *Prompter) inputIsValid(input string) bool {
-	if p.IgnoreCase {
-		input = strings.ToLower(input)
-	}
 	return p.regexp().MatchString(input)
 }
 
@@ -119,13 +116,12 @@ func (p *Prompter) regexp() *regexp.Regexp {
 
 	choices := make([]string, len(p.Choices))
 	for i, v := range p.Choices {
-		choice := regexp.QuoteMeta(v)
-		if p.IgnoreCase {
-			choice = strings.ToLower(choice)
-		}
-		choices[i] = choice
+		choices[i] = regexp.QuoteMeta(v)
 	}
-	regStr := fmt.Sprintf(`\A(?:%s)\z`, strings.Join(choices, "|"))
-	p.reg = regexp.MustCompile(regStr)
+	ignoreReg := ""
+	if p.IgnoreCase {
+		ignoreReg = "(?i)"
+	}
+	p.reg = regexp.MustCompile(fmt.Sprintf(`%s\A(?:%s)\z`, ignoreReg, strings.Join(choices, "|")))
 	return p.reg
 }
