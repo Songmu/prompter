@@ -12,6 +12,9 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+// VERSION version of prompter
+const VERSION = "0.1.0"
+
 // Prompter is object for prompting
 type Prompter struct {
 	Message string
