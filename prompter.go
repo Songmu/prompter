@@ -26,14 +26,13 @@ type Prompter struct {
 
 // Prompt displays a prompt and returns answer
 func (p *Prompter) Prompt() string {
+	fmt.Print(p.msg())
 	if p.UseDefault || skip() {
 		return p.Default
 	}
 
 	input := ""
 	for {
-		fmt.Print(p.msg())
-
 		if p.NoEcho {
 			b, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 			if err == nil {
@@ -54,6 +53,7 @@ func (p *Prompter) Prompt() string {
 			break
 		}
 		fmt.Println(p.errorMsg())
+		fmt.Print(p.msg())
 	}
 	return input
 }
