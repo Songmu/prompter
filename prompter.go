@@ -1,3 +1,4 @@
+// Package prompter is utility for easy prompting
 package prompter
 
 import (
@@ -20,6 +21,7 @@ type Prompter struct {
 	Regexp     *regexp.Regexp
 	NoEcho     bool
 	UseDefault bool
+	reg        *regexp.Regexp
 }
 
 // Prompt displays a prompt and returns answer
@@ -75,6 +77,9 @@ func (p *Prompter) msg() string {
 }
 
 func (p *Prompter) errorMsg() string {
+	if p.Regexp != nil {
+		return fmt.Sprintf("# Answer should match /%s/", p.Regexp)
+	}
 	if p.Choices != nil && len(p.Choices) > 0 {
 		if len(p.Choices) == 1 {
 			return fmt.Sprintf("# Enter `%s`", p.Choices[0])
@@ -85,7 +90,7 @@ func (p *Prompter) errorMsg() string {
 		}
 		return fmt.Sprintf("# Enter %s or `%s`", strings.Join(choices, ", "), p.Choices[len(p.Choices)-1])
 	}
-	return fmt.Sprintf("# Answer should be matched the regexp: /%s/", p.regexp())
+	return ""
 }
 
 func (p *Prompter) inputIsValid(input string) bool {
@@ -101,12 +106,15 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.Regexp != nil {
 		return p.Regexp
 	}
-	if p.Choices == nil || len(p.Choices) == 0 {
-		p.Regexp = allReg
-		return p.Regexp
+	if p.reg != nil {
+		return p.reg
 	}
-	choices := make([]string, len(p.Choices))
+	if p.Choices == nil || len(p.Choices) == 0 {
+		p.reg = allReg
+		return p.reg
+	}
 
+	choices := make([]string, len(p.Choices))
 	for i, v := range p.Choices {
 		choice := regexp.QuoteMeta(v)
 		if p.IgnoreCase {
@@ -115,6 +123,6 @@ func (p *Prompter) regexp() *regexp.Regexp {
 		choices[i] = choice
 	}
 	regStr := fmt.Sprintf(`\A(?:%s)\z`, strings.Join(choices, "|"))
-	p.Regexp = regexp.MustCompile(regStr)
-	return p.Regexp
+	p.reg = regexp.MustCompile(regStr)
+	return p.reg
 }
