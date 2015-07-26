@@ -13,15 +13,28 @@ prompter
 
 ## Description
 
-utility for easy prompting
+utility for easy prompting in Golang
 
 ## Synopsis
 
-	lang := prompter.Choose("Which language do you like the most?", []string{"Perl", "Golang", "Scala", "Ruby"}, "Perl")
 	twitterID := prompter.Prompt("Enter your twitter ID", "")
+	lang := prompter.Choose("Which language do you like the most?", []string{"Perl", "Golang", "Scala", "Ruby"}, "Perl")
 	passwd := prompter.Password("Enter your password")
 	var likeSushi bool = prompter.YN("Do you like sushi?", true)
 	var likeBeer bool = prompter.YesNo("Do you like beer?", false)
+
+## Features
+
+- Easy to use
+- Care non-interactive (not a tty) environment
+  - `Default` is used and the process is not blocked
+- No howeyc/gopass (which uses cgo) dependency
+  - cross build friendly
+- Customizable prompt setting by using `&prompter.Prompt{}` directly
+
+## License
+
+[MIT][license]
 
 ## Author
 
