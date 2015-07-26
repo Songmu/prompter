@@ -36,30 +36,26 @@ func (p *Prompter) Prompt() string {
 	if p.UseDefault || skip() {
 		return p.Default
 	}
-
 	input := ""
-	for {
-		if p.NoEcho {
-			b, err := terminal.ReadPassword(int(os.Stdin.Fd()))
-			if err == nil {
-				input = string(b)
-			}
-			fmt.Print("\n")
-		} else {
-			scanner := bufio.NewScanner(os.Stdin)
-			ok := scanner.Scan()
-			if ok {
-				input = strings.TrimRight(scanner.Text(), "\r\n")
-			}
+	if p.NoEcho {
+		b, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+		if err == nil {
+			input = string(b)
 		}
-		if input == "" {
-			input = p.Default
+		fmt.Print("\n")
+	} else {
+		scanner := bufio.NewScanner(os.Stdin)
+		ok := scanner.Scan()
+		if ok {
+			input = strings.TrimRight(scanner.Text(), "\r\n")
 		}
-		if p.inputIsValid(input) {
-			break
-		}
+	}
+	if input == "" {
+		input = p.Default
+	}
+	if !p.inputIsValid(input) {
 		fmt.Println(p.errorMsg())
-		fmt.Print(p.msg())
+		return p.Prompt()
 	}
 	return input
 }
