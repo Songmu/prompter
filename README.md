@@ -30,7 +30,7 @@ utility for easy prompting in Golang
   - `Default` is used and the process is not blocked
 - No howeyc/gopass (which uses cgo) dependency
   - cross build friendly
-- Customizable prompt setting by using `&prompter.Prompt{}` directly
+- Customizable prompt setting by using `&prompter.Prompter{}` directly
 
 ## License
 
