@@ -17,11 +17,13 @@ utility for easy prompting in Golang
 
 ## Synopsis
 
-	twitterID := prompter.Prompt("Enter your twitter ID", "")
-	lang := prompter.Choose("Which language do you like the most?", []string{"Perl", "Golang", "Scala", "Ruby"}, "Perl")
-	passwd := prompter.Password("Enter your password")
-	var likeSushi bool = prompter.YN("Do you like sushi?", true)
-	var likeBeer bool = prompter.YesNo("Do you like beer?", false)
+```go
+twitterID := prompter.Prompt("Enter your twitter ID", "")
+lang := prompter.Choose("Which language do you like the most?", []string{"Perl", "Golang", "Scala", "Ruby"}, "Perl")
+passwd := prompter.Password("Enter your password")
+var likeSushi bool = prompter.YN("Do you like sushi?", true)
+var likeBeer bool = prompter.YesNo("Do you like beer?", false)
+```
 
 ## Features
 
