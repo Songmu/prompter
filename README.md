@@ -1,8 +1,8 @@
 prompter
 =======
 
-[![Build Status](https://travis-ci.org/Songmu/prompter.png?branch=master)][travis]
-[![Coverage Status](https://coveralls.io/repos/Songmu/prompter/badge.png?branch=master)][coveralls]
+[![Build Status](https://travis-ci.org/Songmu/prompter.svg?branch=master)][travis]
+[![Coverage Status](https://coveralls.io/repos/Songmu/prompter/badge.svg?branch=master)][coveralls]
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 [![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs]
 
