@@ -64,8 +64,8 @@ func skip() bool {
 	if os.Getenv("GO_PROMPTER_USE_DEFAULT") != "" {
 		return true
 	}
-	return !(isatty.IsTerminal(os.Stdin.Fd()) || isatty.IsCygwinTerminal(os.Stdin.Fd())) || !(isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd()))
-		
+	return !(isatty.IsTerminal(os.Stdin.Fd()) || isatty.IsCygwinTerminal(os.Stdin.Fd())) ||
+		!(isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd()))
 }
 
 func (p *Prompter) msg() string {
