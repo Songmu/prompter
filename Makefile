@@ -1,6 +1,4 @@
-ifdef update
-  u=-u
-endif
+u := $(if $(update),-u)
 
 export GO111MODULE=on
 
@@ -11,10 +9,14 @@ deps:
 
 .PHONY: devel-deps
 devel-deps: deps
-	GO111MODULE=off go get ${u}  \
+	sh -c '\
+	tmpdir=$$(mktemp -d); \
+	cd $$tmpdir; \
+	go get ${u}  \
 	  golang.org/x/lint/golint   \
 	  github.com/mattn/goveralls \
-	  github.com/Songmu/godzil/cmd/godzil
+	  github.com/Songmu/godzil/cmd/godzil; \
+	rm -rf $$tmpdir'
 
 .PHONY: test
 test: deps
