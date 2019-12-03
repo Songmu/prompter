@@ -14,7 +14,6 @@ devel-deps: deps
 	cd $$tmpdir; \
 	go get ${u}  \
 	  golang.org/x/lint/golint   \
-	  github.com/mattn/goveralls \
 	  github.com/Songmu/godzil/cmd/godzil; \
 	rm -rf $$tmpdir'
 
