@@ -14,9 +14,9 @@ func Prompt(message, defaultAnswer string) string {
 }
 
 // YN y/n choice
-func YN(message string, yes bool) bool {
+func YN(message string, defaultToYes bool) bool {
 	defaultChoice := "n"
-	if yes {
+	if defaultToYes {
 		defaultChoice = "y"
 	}
 	input := (&Prompter{
@@ -30,9 +30,9 @@ func YN(message string, yes bool) bool {
 }
 
 // YesNo yes/no choice
-func YesNo(message string, yes bool) bool {
+func YesNo(message string, defaultToYes bool) bool {
 	defaultChoice := "no"
-	if yes {
+	if defaultToYes {
 		defaultChoice = "yes"
 	}
 	input := (&Prompter{
