@@ -1,15 +1,15 @@
 prompter
 =======
 
-[![Build Status](https://travis-ci.org/Songmu/prompter.svg?branch=master)][travis]
-[![Coverage Status](https://coveralls.io/repos/Songmu/prompter/badge.svg?branch=master)][coveralls]
+[![Test Status](https://github.com/Songmu/prompter/workflows/test/badge.svg?branch=main)][actions]
+[![Coverage Status](https://covecov.io/gh/Songmu/prompter/branch/main/graph/badge.svg)][codecov]
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
-[![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs]
+[![GoDev](https://pkg.go.dev/github.com/Songmu/prompter)][godev]
 
-[travis]: https://travis-ci.org/Songmu/prompter
-[coveralls]: https://coveralls.io/r/Songmu/prompter?branch=master
-[license]: https://github.com/Songmu/prompter/blob/master/LICENSE
-[godocs]: http://godoc.org/github.com/Songmu/prompter
+[actions]: https://github.com/Songmu/prompter/actions?workflow=test
+[codecov]: https://codecov.io/gh/Songmu/prompter
+[license]: https://github.com/Songmu/prompter/blob/main/LICENSE
+[godev]: http://pkg.go.dev/github.com/Songmu/prompter
 
 ## Description
 
