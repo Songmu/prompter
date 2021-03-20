@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.5.0](https://github.com/Songmu/prompter/compare/v0.4.0...v0.5.0) (2021-03-20)
+
+* Use golang.org/x/term instead of golang.org/x/crypto/ssh/terminal [#10](https://github.com/Songmu/prompter/pull/10) ([johejo](https://github.com/johejo))
+
 ## [v0.4.0](https://github.com/Songmu/prompter/compare/v0.3.0...v0.4.0) (2020-09-01)
 
 * Added support for using pipes with GO_PROMPTER_USE_PIPE [#8](https://github.com/Songmu/prompter/pull/8) ([pyama86](https://github.com/pyama86))
