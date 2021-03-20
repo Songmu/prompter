@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/mattn/go-isatty"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 // VERSION version of prompter
@@ -38,7 +38,7 @@ func (p *Prompter) Prompt() string {
 	}
 	input := ""
 	if p.NoEcho {
-		b, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+		b, err := term.ReadPassword(int(os.Stdin.Fd()))
 		if err == nil {
 			input = string(b)
 		}
