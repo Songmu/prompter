@@ -2,9 +2,9 @@ prompter
 =======
 
 [![Test Status](https://github.com/Songmu/prompter/workflows/test/badge.svg?branch=main)][actions]
-[![Coverage Status](https://covecov.io/gh/Songmu/prompter/branch/main/graph/badge.svg)][codecov]
+[![Coverage Status](https://codecov.io/gh/Songmu/prompter/branch/main/graph/badge.svg)][codecov]
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
-[![GoDev](https://pkg.go.dev/github.com/Songmu/prompter)][godev]
+[![GoDev](https://pkg.go.dev/badge/github.com/Songmu/prompter)][godev]
 
 [actions]: https://github.com/Songmu/prompter/actions?workflow=test
 [codecov]: https://codecov.io/gh/Songmu/prompter
