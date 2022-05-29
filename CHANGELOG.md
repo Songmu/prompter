@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.5.1](https://github.com/Songmu/prompter/compare/v0.5.0...v0.5.1) (2022-05-29)
+
+* update deps [#13](https://github.com/Songmu/prompter/pull/13) ([Songmu](https://github.com/Songmu))
+* [maintenance] dynamic go versions in testing [#12](https://github.com/Songmu/prompter/pull/12) ([Songmu](https://github.com/Songmu))
+* maint README.md and Makefile. and migrate to codecov from coveralls [#11](https://github.com/Songmu/prompter/pull/11) ([Songmu](https://github.com/Songmu))
+
 ## [v0.5.0](https://github.com/Songmu/prompter/compare/v0.4.0...v0.5.0) (2021-03-20)
 
 * Use golang.org/x/term instead of golang.org/x/crypto/ssh/terminal [#10](https://github.com/Songmu/prompter/pull/10) ([johejo](https://github.com/johejo))
