@@ -5,7 +5,17 @@ on:
     - "**"
   pull_request: {}
 jobs:
+  go-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.versions.outputs.value }}
+    steps:
+      - id: versions
+        run: |
+          versions=$(curl -s 'https://go.dev/dl/?mode=json' | jq -c 'map(.version[2:])')
+          echo "::set-output name=value::${versions}"
   test:
+    needs: go-versions
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -14,20 +24,19 @@ jobs:
         - ubuntu-latest
         - macOS-latest
         - windows-latest
+        go-version: ${{fromJson(needs.go-versions.outputs.versions)}}
     steps:
     - name: setup go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
-        go-version: 1.x
+        go-version: ${{ matrix.go-version }}
     - name: Set git to use LF
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
       if: "matrix.os == 'windows-latest'"
     - name: checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v3
     - name: test
       run: go test -race -coverprofile coverage.out -covermode atomic
     - name: Upload coverage to Codecov
