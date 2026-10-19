@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/mattn/go-isatty"
@@ -26,6 +27,7 @@ type Prompter struct {
 	// for passwords and so on.
 	NoEcho     bool
 	UseDefault bool
+	reg        *regexp.Regexp
 }
 
 // Prompt displays a prompt and returns the answer.
@@ -42,6 +44,17 @@ func (p *Prompter) Prompt() string {
 // PromptWithError displays a prompt and returns the answer or a read error.
 // EOF and read errors are not treated as empty answers or replaced by Default.
 func (p *Prompter) PromptWithError() (string, error) {
+	return p.clone().prompt()
+}
+
+func (p *Prompter) clone() *Prompter {
+	cloned := *p
+	cloned.Choices = slices.Clone(p.Choices)
+	cloned.reg = nil
+	return &cloned
+}
+
+func (p *Prompter) prompt() (string, error) {
 	for {
 		fmt.Fprint(os.Stderr, p.msg())
 		if p.UseDefault || skip() {
@@ -126,8 +139,12 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.Regexp != nil {
 		return p.Regexp
 	}
+	if p.reg != nil {
+		return p.reg
+	}
 	if len(p.Choices) == 0 {
-		return allReg
+		p.reg = allReg
+		return p.reg
 	}
 
 	choices := make([]string, len(p.Choices))
@@ -138,5 +155,6 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.IgnoreCase {
 		ignoreReg = "(?i)"
 	}
-	return regexp.MustCompile(fmt.Sprintf(`%s\A(?:%s)\z`, ignoreReg, strings.Join(choices, "|")))
+	p.reg = regexp.MustCompile(fmt.Sprintf(`%s\A(?:%s)\z`, ignoreReg, strings.Join(choices, "|")))
+	return p.reg
 }

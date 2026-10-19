@@ -56,12 +56,13 @@ func TestValidationUsesCurrentSettings(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tt.prompter.inputIsValid("a")
+			tt.prompter.clone().inputIsValid("a")
 			tt.update(&tt.prompter)
-			if !tt.prompter.inputIsValid(tt.accepted) {
+			prompt := tt.prompter.clone()
+			if !prompt.inputIsValid(tt.accepted) {
 				t.Errorf("inputIsValid(%q) = false, want true", tt.accepted)
 			}
-			if tt.rejected != "" && tt.prompter.inputIsValid(tt.rejected) {
+			if tt.rejected != "" && prompt.inputIsValid(tt.rejected) {
 				t.Errorf("inputIsValid(%q) = true, want false", tt.rejected)
 			}
 		})
@@ -70,14 +71,100 @@ func TestValidationUsesCurrentSettings(t *testing.T) {
 
 func TestRegexpOverrideUsesCurrentChoices(t *testing.T) {
 	p := &Prompter{Choices: []string{"a"}}
-	p.inputIsValid("a")
+	p.clone().inputIsValid("a")
 	p.Regexp = regexp.MustCompile(`\Acustom\z`)
 	p.Choices = []string{"b"}
-	if !p.inputIsValid("custom") || p.inputIsValid("b") {
+	prompt := p.clone()
+	if !prompt.inputIsValid("custom") || prompt.inputIsValid("b") {
 		t.Fatal("Regexp should take priority over Choices")
 	}
 	p.Regexp = nil
-	if !p.inputIsValid("b") || p.inputIsValid("a") || p.inputIsValid("custom") {
+	prompt = p.clone()
+	if !prompt.inputIsValid("b") || prompt.inputIsValid("a") || prompt.inputIsValid("custom") {
 		t.Fatal("validation should use current Choices after removing Regexp")
+	}
+}
+
+func TestPromptCloneIsolatesSettings(t *testing.T) {
+	base := &Prompter{
+		Message:    "Choice",
+		Choices:    []string{"a"},
+		IgnoreCase: true,
+		Default:    "a",
+	}
+	base.regexp()
+	prompt := base.clone()
+	if prompt == base {
+		t.Fatal("clone must return a separate Prompter")
+	}
+	if prompt.reg != nil {
+		t.Fatal("clone must not inherit the base's cached regexp")
+	}
+	base.Message = "Changed"
+	base.Choices[0] = "b"
+	base.IgnoreCase = false
+	base.Default = "b"
+	if got := prompt.msg(); got != "Choice (a) [a]: " {
+		t.Errorf("clone message = %q, want original settings", got)
+	}
+	if !prompt.inputIsValid("A") || prompt.inputIsValid("b") {
+		t.Fatal("clone must validate against its own settings")
+	}
+	if base.Choices[0] != "b" || base.IgnoreCase || base.Default != "b" {
+		t.Fatal("validating a clone must not change the base")
+	}
+}
+
+func TestPromptCloneReusesRegexp(t *testing.T) {
+	base := &Prompter{Choices: []string{"a"}}
+	prompt := base.clone()
+	reg := prompt.regexp()
+	if reg == nil || prompt.reg != reg {
+		t.Fatal("clone must cache its generated regexp")
+	}
+	if !prompt.inputIsValid("a") || prompt.inputIsValid("b") {
+		t.Fatal("clone must validate against its choices")
+	}
+	if prompt.regexp() != reg {
+		t.Fatal("clone must reuse its regexp across validation attempts")
+	}
+	if base.reg != nil {
+		t.Fatal("validating a clone must not populate the base's cache")
+	}
+	next := base.clone()
+	if next.reg != nil || next.regexp() == reg {
+		t.Fatal("a new clone must build its own regexp")
+	}
+}
+
+func TestPromptUsesFreshClone(t *testing.T) {
+	p := &Prompter{Message: "Choice", Choices: []string{"a"}}
+	for _, tt := range []struct {
+		choice    string
+		withError bool
+	}{
+		{choice: "a"},
+		{choice: "b", withError: true},
+	} {
+		t.Run(tt.choice, func(t *testing.T) {
+			promptStreams(t, tt.choice+"\n")
+			p.Choices[0] = tt.choice
+			var got string
+			if tt.withError {
+				var err error
+				got, err = p.PromptWithError()
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				got = p.Prompt()
+			}
+			if got != tt.choice {
+				t.Errorf("prompt answer = %q, want %q", got, tt.choice)
+			}
+			if p.reg != nil {
+				t.Fatal("prompting must leave the base's cache empty")
+			}
+		})
 	}
 }
