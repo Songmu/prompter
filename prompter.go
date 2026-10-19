@@ -2,7 +2,6 @@
 package prompter
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"regexp"
@@ -29,34 +28,48 @@ type Prompter struct {
 	UseDefault bool
 }
 
-// Prompt displays a prompt and returns answer
+// Prompt displays a prompt and returns the answer.
+// On a read error, it reports the error to stderr and returns an empty string.
+// Use PromptWithError to handle read errors directly.
 func (p *Prompter) Prompt() string {
-	fmt.Fprint(os.Stderr, p.msg())
-	if p.UseDefault || skip() {
-		return p.Default
-	}
-	input := ""
-	if p.NoEcho {
-		b, err := term.ReadPassword(int(os.Stdin.Fd()))
-		if err == nil {
-			input = string(b)
-		}
-		fmt.Fprint(os.Stderr, "\n")
-	} else {
-		scanner := bufio.NewScanner(os.Stdin)
-		ok := scanner.Scan()
-		if ok {
-			input = strings.TrimRight(scanner.Text(), "\r\n")
-		}
-	}
-	if input == "" {
-		input = p.Default
-	}
-	if !p.inputIsValid(input) {
-		fmt.Fprintln(os.Stderr, p.errorMsg())
-		return p.Prompt()
+	input, err := p.PromptWithError()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "# %v\n", err)
 	}
 	return input
+}
+
+// PromptWithError displays a prompt and returns the answer or a read error.
+// EOF and read errors are not treated as empty answers or replaced by Default.
+func (p *Prompter) PromptWithError() (string, error) {
+	for {
+		fmt.Fprint(os.Stderr, p.msg())
+		if p.UseDefault || skip() {
+			return p.Default, nil
+		}
+		var input string
+		if p.NoEcho {
+			b, err := term.ReadPassword(int(os.Stdin.Fd()))
+			fmt.Fprint(os.Stderr, "\n")
+			if err != nil {
+				return "", fmt.Errorf("read password: %w", err)
+			}
+			input = string(b)
+		} else {
+			var err error
+			input, err = readLine(os.Stdin)
+			if err != nil {
+				return "", fmt.Errorf("read input: %w", err)
+			}
+		}
+		if input == "" {
+			input = p.Default
+		}
+		if p.inputIsValid(input) {
+			return input, nil
+		}
+		fmt.Fprintln(os.Stderr, p.errorMsg())
+	}
 }
 
 func skip() bool {
