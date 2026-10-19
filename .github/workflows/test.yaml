@@ -2,8 +2,8 @@ name: test
 on:
   push:
     branches:
-    - "**"
-  pull_request: {}
+    - "main"
+  pull_request:
 jobs:
   go-versions:
     runs-on: ubuntu-latest
