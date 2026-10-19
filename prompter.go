@@ -12,7 +12,7 @@ import (
 )
 
 // VERSION version of prompter
-const VERSION = "0.5.1"
+const VERSION = "1.0.0"
 
 // Prompter is object for prompting
 type Prompter struct {
