@@ -78,7 +78,7 @@ func isPipe() bool {
 
 func (p *Prompter) msg() string {
 	msg := p.Message
-	if p.Choices != nil && len(p.Choices) > 0 {
+	if len(p.Choices) > 0 {
 		msg += fmt.Sprintf(" (%s)", strings.Join(p.Choices, "/"))
 	}
 	if p.Default != "" {
@@ -91,7 +91,7 @@ func (p *Prompter) errorMsg() string {
 	if p.Regexp != nil {
 		return fmt.Sprintf("# Answer should match /%s/", p.Regexp)
 	}
-	if p.Choices != nil && len(p.Choices) > 0 {
+	if len(p.Choices) > 0 {
 		if len(p.Choices) == 1 {
 			return fmt.Sprintf("# Enter `%s`", p.Choices[0])
 		}
@@ -117,7 +117,7 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.reg != nil {
 		return p.reg
 	}
-	if p.Choices == nil || len(p.Choices) == 0 {
+	if len(p.Choices) == 0 {
 		p.reg = allReg
 		return p.reg
 	}
