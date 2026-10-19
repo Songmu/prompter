@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.0.0](https://github.com/Songmu/prompter/compare/v0.5.1...v1.0.0) - 2026-10-19
+
+- Automate library releases with tagpr by @Songmu in https://github.com/Songmu/prompter/pull/14
+- update Go by @Songmu in https://github.com/Songmu/prompter/pull/16
+- Write prompts to stderr to keep stdout clean by @Songmu in https://github.com/Songmu/prompter/pull/17
+- Modernize GitHub Actions and automate dependency updates by @Songmu in https://github.com/Songmu/prompter/pull/18
+- Fix EOF and read errors being treated as prompt answers by @Songmu in https://github.com/Songmu/prompter/pull/22
+- Fix input loss across prompts and validation retries by @Songmu in https://github.com/Songmu/prompter/pull/23
+
 ## [v0.5.1](https://github.com/Songmu/prompter/compare/v0.5.0...v0.5.1) (2022-05-29)
 
 * update deps [#13](https://github.com/Songmu/prompter/pull/13) ([Songmu](https://github.com/Songmu))
