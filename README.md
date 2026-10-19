@@ -28,6 +28,7 @@ var likeBeer bool = prompter.YesNo("Do you like beer?", false)
 ## Features
 
 - Easy to use
+- Prompts and validation messages go to stderr, keeping stdout clean
 - Care non-interactive (not a tty) environment
   - `Default` is used and the process is not blocked
 - No howeyc/gopass (which uses cgo) dependency

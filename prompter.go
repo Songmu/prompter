@@ -32,7 +32,7 @@ type Prompter struct {
 
 // Prompt displays a prompt and returns answer
 func (p *Prompter) Prompt() string {
-	fmt.Print(p.msg())
+	fmt.Fprint(os.Stderr, p.msg())
 	if p.UseDefault || skip() {
 		return p.Default
 	}
@@ -42,7 +42,7 @@ func (p *Prompter) Prompt() string {
 		if err == nil {
 			input = string(b)
 		}
-		fmt.Print("\n")
+		fmt.Fprint(os.Stderr, "\n")
 	} else {
 		scanner := bufio.NewScanner(os.Stdin)
 		ok := scanner.Scan()
@@ -54,7 +54,7 @@ func (p *Prompter) Prompt() string {
 		input = p.Default
 	}
 	if !p.inputIsValid(input) {
-		fmt.Println(p.errorMsg())
+		fmt.Fprintln(os.Stderr, p.errorMsg())
 		return p.Prompt()
 	}
 	return input
@@ -72,7 +72,7 @@ func skip() bool {
 
 func isPipe() bool {
 	return !(isatty.IsTerminal(os.Stdin.Fd()) || isatty.IsCygwinTerminal(os.Stdin.Fd())) ||
-		!(isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd()))
+		!(isatty.IsTerminal(os.Stderr.Fd()) || isatty.IsCygwinTerminal(os.Stderr.Fd()))
 
 }
 

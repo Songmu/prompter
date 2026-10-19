@@ -16,7 +16,7 @@ func ExamplePrompter() {
 	fmt.Println("aa")
 	fmt.Printf("your input is %s.", input)
 	// Output:
-	// please select (aa/bb/cc) [aa]: aa
+	// aa
 	// your input is aa.
 }
 
@@ -25,7 +25,7 @@ func ExampleChoose() {
 	fmt.Println("Perl")
 	fmt.Printf("Great! You like %s!", lang)
 	// Output:
-	// Which language do you like the most? (Perl/Golang/Scala/Ruby) [Perl]: Perl
+	// Perl
 	// Great! You like Perl!
 }
 
@@ -35,7 +35,7 @@ func ExamplePrompt() {
 	fmt.Println("Songmu")
 	fmt.Printf("Hi Songmu!")
 	// Output:
-	// Enter your twitter ID: Songmu
+	// Songmu
 	// Hi Songmu!
 }
 
@@ -45,7 +45,7 @@ func ExamplePassword() {
 	fmt.Println("****")
 	fmt.Print("I got your password! :P")
 	// Output:
-	// Enter your password: ****
+	// ****
 	// I got your password! :P
 }
 
@@ -55,7 +55,7 @@ func ExampleYN() {
 		fmt.Print("Nice! Let's go sushi bar!")
 	}
 	// Output:
-	// Do you like sushi? (y/n) [y]: y
+	// y
 	// Nice! Let's go sushi bar!
 }
 
@@ -65,7 +65,6 @@ func ExampleYesNo() {
 		fmt.Print("Oops!")
 	}
 	// Output:
-	// Do you like beer? (yes/no) [no]: no
+	// no
 	// Oops!
 }
-
