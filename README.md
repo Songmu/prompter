@@ -35,6 +35,28 @@ var likeBeer bool = prompter.YesNo("Do you like beer?", false)
   - cross build friendly
 - Customizable prompt setting by using `&prompter.Prompter{}` directly
 
+## Read errors
+
+Use `Prompter.PromptWithError()` to distinguish an answer from EOF or a read
+error:
+
+```go
+answer, err := (&prompter.Prompter{
+    Message: "Enter your name",
+    Default: "guest",
+}).PromptWithError()
+if err != nil {
+    return err
+}
+fmt.Println(answer)
+```
+
+An empty line uses `Default`, but EOF and read errors return an empty answer and
+an error. `Prompt()` and the convenience functions instead report read errors to
+stderr and return an empty answer (`false` for `YN` and `YesNo`).
+Explicit default mode and non-interactive mode still return `Default` without
+reading input.
+
 ## License
 
 [MIT][license]
