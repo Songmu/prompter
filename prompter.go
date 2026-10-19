@@ -27,7 +27,6 @@ type Prompter struct {
 	// for passwords and so on.
 	NoEcho     bool
 	UseDefault bool
-	reg        *regexp.Regexp
 }
 
 // Prompt displays a prompt and returns answer
@@ -114,12 +113,8 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.Regexp != nil {
 		return p.Regexp
 	}
-	if p.reg != nil {
-		return p.reg
-	}
 	if len(p.Choices) == 0 {
-		p.reg = allReg
-		return p.reg
+		return allReg
 	}
 
 	choices := make([]string, len(p.Choices))
@@ -130,6 +125,5 @@ func (p *Prompter) regexp() *regexp.Regexp {
 	if p.IgnoreCase {
 		ignoreReg = "(?i)"
 	}
-	p.reg = regexp.MustCompile(fmt.Sprintf(`%s\A(?:%s)\z`, ignoreReg, strings.Join(choices, "|")))
-	return p.reg
+	return regexp.MustCompile(fmt.Sprintf(`%s\A(?:%s)\z`, ignoreReg, strings.Join(choices, "|")))
 }
