@@ -1,0 +1,4 @@
+[tagpr]
+	vPrefix = true
+	releaseBranch = main
+	versionFile = prompter.go
