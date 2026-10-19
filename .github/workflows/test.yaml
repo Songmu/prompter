@@ -2,42 +2,46 @@ name: test
 on:
   push:
     branches:
-    - "main"
+    - main
   pull_request:
+
+permissions: {}
+
 jobs:
-  go-versions:
-    runs-on: ubuntu-latest
-    outputs:
-      versions: ${{ steps.versions.outputs.value }}
-    steps:
-      - id: versions
-        run: |
-          versions=$(curl -s 'https://go.dev/dl/?mode=json' | jq -c 'map(.version[2:])')
-          echo "::set-output name=value::${versions}"
   test:
-    needs: go-versions
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         os:
         - ubuntu-latest
-        - macOS-latest
+        - macos-latest
         - windows-latest
-        go-version: ${{fromJson(needs.go-versions.outputs.versions)}}
+        go-version:
+        - oldstable
+        - stable
     steps:
-    - name: setup go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ${{ matrix.go-version }}
     - name: Set git to use LF
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
       if: "matrix.os == 'windows-latest'"
     - name: checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
+    - name: setup go
+      uses: actions/setup-go@v7.0.0
+      with:
+        go-version: ${{ matrix.go-version }}
     - name: test
       run: go test -race -coverprofile coverage.out -covermode atomic
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v7.1.1
+      with:
+        files: coverage.out
+        use_oidc: true
