@@ -10,7 +10,7 @@ workflows:
     '.github/workflows/tagpr.yaml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
-        - 'songmu/tagpr@v1.21.3'
+        - 'songmu/tagpr@v1.21.4'
     '.github/workflows/test.yaml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
@@ -50,8 +50,8 @@ dependencies:
         repo_id: 262723301
         uses:
             - 'reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f'
-    'songmu/tagpr@v1.21.3':
-        ref: 'v1.21.3'
-        commit: 'sha1-1fcd7292d1fe8ea9a8313eef46b8d80b7a15d227'
+    'songmu/tagpr@v1.21.4':
+        ref: 'v1.21.4'
+        commit: 'sha1-e1250d6c84e4425db82b5e90549d62dfe23e9ebe'
         owner_id: 177122
         repo_id: 524603982
